@@ -1,7 +1,8 @@
 #![no_std]
 #![no_main]
 #![feature(naked_functions)]
-// #![deny(warnings)]
+#![allow(static_mut_refs)]
+#![deny(warnings)]
 
 use rcore_console::log;
 use riscv::register::*;
