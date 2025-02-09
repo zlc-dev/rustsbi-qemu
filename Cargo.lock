@@ -4,9 +4,9 @@ version = 4
 
 [[package]]
 name = "aclint"
-version = "0.0.0"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a01ba40421eca6c4f1afcedd8465fba6d9e5ef8e0e13060d0141e4cded4ab4a"
+checksum = "8cc30f3f60fd3106787fa9b540e64372dd4793813c400ba12d113506e94dcb8c"
 
 [[package]]
 name = "anstream"
@@ -68,7 +68,7 @@ version = "0.0.1"
 dependencies = [
  "rcore-console",
  "riscv 0.10.1",
- "sbi-rt",
+ "sbi-rt 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "uart16550",
 ]
 
@@ -77,6 +77,12 @@ name = "bit_field"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc827186963e592360843fb5ba4b973e145841266c1357f7180c43526f2e5b61"
+
+[[package]]
+name = "bitflags"
+version = "2.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8f68f53c83ab957f72c32642f3868eec03eb974d1fb82e453128456482613d36"
 
 [[package]]
 name = "clap"
@@ -126,9 +132,9 @@ checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
 name = "critical-section"
-version = "1.1.2"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7059fff8937831a9ae6f0fe4d658ffabf58f2ca96aa9dec1c889f936f705f216"
+checksum = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b"
 
 [[package]]
 name = "dtb-walker"
@@ -154,9 +160,8 @@ checksum = "361a90feb7004eca4019fb28352a9465666b24f840f5c3cddf0ff13920590b89"
 
 [[package]]
 name = "fast-trap"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7fbe69badc2e0dc98ad2787648fa140b5772d24b49e9a6b180a67e1348f7544c"
+version = "0.1.0"
+source = "git+https://github.com/rustsbi/fast-trap.git#54bf600398c7b9af1b753c3fd78987f0053f1e88"
 
 [[package]]
 name = "heck"
@@ -168,7 +173,7 @@ checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 name = "hsm-cell"
 version = "0.1.0"
 dependencies = [
- "sbi-spec",
+ "sbi-spec 0.0.7",
 ]
 
 [[package]]
@@ -216,6 +221,12 @@ checksum = "f5e9cccd7bf690840399e09e283b7f5aa219886dc5770c083beee2adca0ffabe"
 dependencies = [
  "once_cell",
 ]
+
+[[package]]
+name = "paste"
+version = "1.0.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
 name = "proc-macro2"
@@ -267,6 +278,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "riscv"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ea8ff73d3720bdd0a97925f0bf79ad2744b6da8ff36be3840c48ac81191d7a7"
+dependencies = [
+ "critical-section",
+ "embedded-hal 1.0.0",
+ "paste",
+ "riscv-pac",
+]
+
+[[package]]
+name = "riscv-pac"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8188909339ccc0c68cfb5a04648313f09621e8b87dc03095454f1a11f6c5d436"
+
+[[package]]
 name = "rustsbi"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,7 +303,7 @@ checksum = "44c13763120794ed11d64bac885fb31d384ae385c3287b0697711b97affbf8ab"
 dependencies = [
  "riscv 0.11.1",
  "rustsbi-macros",
- "sbi-spec",
+ "sbi-spec 0.0.7",
 ]
 
 [[package]]
@@ -299,7 +328,7 @@ dependencies = [
  "rcore-console",
  "riscv 0.10.1",
  "rustsbi",
- "sbi-spec",
+ "sbi-spec 0.0.7",
  "sifive-test-device",
  "spin",
  "uart16550",
@@ -311,7 +340,15 @@ version = "0.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fbaa69be1eedc61c426e6d489b2260482e928b465360576900d52d496a58bd0"
 dependencies = [
- "sbi-spec",
+ "sbi-spec 0.0.7",
+]
+
+[[package]]
+name = "sbi-rt"
+version = "0.0.3"
+source = "git+https://github.com/rustsbi/rustsbi.git#99f4177fbed12c96c2c62121d51953b1bfa0ff43"
+dependencies = [
+ "sbi-spec 0.0.8",
 ]
 
 [[package]]
@@ -321,15 +358,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6e36312fb5ddc10d08ecdc65187402baba4ac34585cb9d1b78522ae2358d890"
 
 [[package]]
+name = "sbi-spec"
+version = "0.0.8"
+source = "git+https://github.com/rustsbi/rustsbi.git#99f4177fbed12c96c2c62121d51953b1bfa0ff43"
+dependencies = [
+ "bitflags",
+]
+
+[[package]]
 name = "sbi-testing"
 version = "0.0.3-alpha.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "135c0f1ce07ede77a7e1c3daff35d20d37b54fd1037ac02ab9595c231518531e"
+source = "git+https://github.com/rustsbi/rustsbi.git#99f4177fbed12c96c2c62121d51953b1bfa0ff43"
 dependencies = [
  "log",
- "riscv 0.11.1",
- "sbi-rt",
- "sbi-spec",
+ "riscv 0.12.1",
+ "sbi-rt 0.0.3 (git+https://github.com/rustsbi/rustsbi.git)",
+ "sbi-spec 0.0.8",
 ]
 
 [[package]]

@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
-#![feature(naked_functions, asm_const)]
+#![feature(naked_functions)]
+#![allow(static_mut_refs)]
 #![deny(warnings)]
 
 mod clint;
@@ -27,7 +28,7 @@ extern crate rcore_console;
 
 use constants::*;
 use core::{
-    arch::asm,
+    arch::{asm, naked_asm},
     mem::MaybeUninit,
     sync::atomic::{AtomicBool, Ordering},
 };
@@ -48,7 +49,7 @@ use trap_vec::trap_vec;
 #[no_mangle]
 #[link_section = ".text.entry"]
 unsafe extern "C" fn _start() -> ! {
-    asm!(
+    naked_asm!(
         "   call {locate_stack}
             call {rust_main}
             j    {trap}
@@ -56,7 +57,6 @@ unsafe extern "C" fn _start() -> ! {
         locate_stack = sym trap_stack::locate,
         rust_main    = sym rust_main,
         trap         = sym trap_vec,
-        options(noreturn),
     )
 }
 

@@ -1,6 +1,6 @@
 use crate::clint::CLINT;
 use aclint::SifiveClint as Clint;
-use core::arch::asm;
+use core::arch::naked_asm;
 use fast_trap::trap_entry;
 
 /// 中断向量表
@@ -10,7 +10,7 @@ use fast_trap::trap_entry;
 /// 裸函数。
 #[naked]
 pub(crate) unsafe extern "C" fn trap_vec() {
-    asm!(
+    naked_asm!(
         ".align 2",
         ".option push",
         ".option norvc",
@@ -29,8 +29,7 @@ pub(crate) unsafe extern "C" fn trap_vec() {
         ".option pop",
         default = sym trap_entry,
         mtimer  = sym mtimer,
-        msoft   = sym msoft,
-        options(noreturn)
+        msoft   = sym msoft
     )
 }
 
@@ -41,7 +40,7 @@ pub(crate) unsafe extern "C" fn trap_vec() {
 /// 裸函数。
 #[naked]
 unsafe extern "C" fn mtimer() {
-    asm!(
+    naked_asm!(
         // 换栈：
         // sp      : M sp
         // mscratch: S sp
@@ -80,8 +79,7 @@ unsafe extern "C" fn mtimer() {
         mip_stip     = const 1 << 5,
         clint_ptr    =   sym CLINT,
         //                   Clint::write_mtimecmp_naked(&self, hart_idx, val)
-        set_mtimecmp =   sym Clint::write_mtimecmp_naked,
-        options(noreturn)
+        set_mtimecmp =   sym Clint::write_mtimecmp_naked
     )
 }
 
@@ -92,7 +90,7 @@ unsafe extern "C" fn mtimer() {
 /// 裸函数。
 #[naked]
 unsafe extern "C" fn msoft() {
-    asm!(
+    naked_asm!(
         // 换栈：
         // sp      : M sp
         // mscratch: S sp
@@ -124,7 +122,6 @@ unsafe extern "C" fn msoft() {
         "   mret",
         clint_ptr  = sym CLINT,
         //               Clint::clear_msip_naked(&self, hart_idx)
-        clear_msip = sym Clint::clear_msip_naked,
-        options(noreturn)
+        clear_msip = sym Clint::clear_msip_naked
     )
 }

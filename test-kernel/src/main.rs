@@ -1,12 +1,13 @@
 #![no_std]
 #![no_main]
-#![feature(naked_functions, asm_const)]
+#![feature(naked_functions)]
+#![allow(static_mut_refs)]
 #![deny(warnings)]
 
 #[macro_use]
 extern crate rcore_console;
 
-use core::{arch::asm, ptr::null};
+use core::{arch::{asm, naked_asm}, ptr::null};
 use sbi_testing::sbi;
 use uart16550::Uart16550;
 
@@ -24,13 +25,12 @@ unsafe extern "C" fn _start(hartid: usize, device_tree_paddr: usize) -> ! {
     #[link_section = ".bss.uninit"]
     static mut STACK: [u8; STACK_SIZE] = [0u8; STACK_SIZE];
 
-    asm!(
+    naked_asm!(
         "la sp, {stack} + {stack_size}",
         "j  {main}",
         stack_size = const STACK_SIZE,
         stack      =   sym STACK,
-        main       =   sym rust_main,
-        options(noreturn),
+        main       =   sym rust_main
     )
 }
 

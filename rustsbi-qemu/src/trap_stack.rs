@@ -10,7 +10,7 @@ static mut ROOT_STACK: [Stack; NUM_HART_MAX] = [Stack::ZERO; NUM_HART_MAX];
 /// 定位每个 hart 的栈。
 #[naked]
 pub(crate) unsafe extern "C" fn locate() {
-    core::arch::asm!(
+    core::arch::naked_asm!(
         "   la   sp, {stack}
             li   t0, {per_hart_stack_size}
             csrr t1, mhartid
@@ -24,7 +24,6 @@ pub(crate) unsafe extern "C" fn locate() {
         per_hart_stack_size = const LEN_STACK_PER_HART,
         stack               =   sym ROOT_STACK,
         move_stack          =   sym fast_trap::reuse_stack_for_trap,
-        options(noreturn),
     )
 }
 
